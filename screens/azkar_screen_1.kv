@@ -1,0 +1,64 @@
+<AzkarScreen_1>:
+    name: 'Azkar Screen_1'
+    app: app
+    MDBoxLayout:
+        orientation: 'vertical'
+        spacing : dp(15)
+        halign:"center"
+        MDTopAppBar:
+            theme_bg_color: "Custom"
+            md_bg_color: '#161a1d'
+            type: "small"
+            pos_hint: {"top": 1}
+            MDTopAppBarLeadingButtonContainer:
+                MDActionTopAppBarButton:
+                    icon: "arrow-left"
+                    on_release: app.go_main()  
+                    theme_icon_color: "Custom"
+                    theme_bg_color: "Custom"
+                    theme_font_size: "Custom"
+                    font_size: dp(20)
+                    size_hint: None ,None
+                    size: dp(20), dp(20)                 
+                    md_bg_color: "#101318"
+                    icon_color: "#f4f9fc"  
+
+            MDTopAppBarTitle:
+                text: "أذكاري"
+                theme_text_color: "Custom"
+                theme_font_name: "Custom"
+                theme_font_size: "Custom"
+                font_name:"BBCairo"
+                font_script_name: "Arab"
+                font_direction: "rtl"
+                text_color : "#f4f9fc"
+                font_size : dp(22)
+                pos_hint: {"center_x": .5}
+
+            MDTopAppBarTrailingButtonContainer:
+                MDActionTopAppBarButton:
+                    icon: "information"
+                    on_release: app.info_dialog()  
+                    theme_icon_color: "Custom"
+                    theme_bg_color: "Custom"
+                    theme_font_size: "Custom"
+                    font_size: dp(20)
+                    size_hint: None ,None
+                    size: dp(20), dp(20)                 
+                    md_bg_color: "#101318"
+                    icon_color: "#f4f9fc"  
+
+        MDBoxLayout:
+            orientation: 'vertical'
+            padding : dp(5)
+            spacing : dp(5)
+            halign:"center"
+
+            MDScrollView:
+                do_scroll_x: False
+                do_scroll_y: True
+
+                MDList:
+                    padding:dp(15)
+                    spacing:dp(15)
+                    id:list
