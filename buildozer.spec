@@ -197,7 +197,7 @@ android.accept_sdk_license = True
 # 1) A file to add to resources, legal resource names contain ['a-z','0-9','_']
 # android.add_resources = my_icons/all-inclusive.png:drawable/all_inclusive.png
 # 2) A directory, here  'legal_icons' must contain resources of one kind
-# android.add_resources = data/legal_icons:drawable
+android.add_resources = data/legal_icons:drawable
 # 3) A directory, here 'legal_resources' must contain one or more directories, 
 # each of a resource kind:  drawable, xml, etc...
 # android.add_resources = legal_resources
