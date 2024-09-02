@@ -198,6 +198,7 @@ class MainApp(MDApp):
                         padding=(10, 10, 10, 10),
                         state_hover=0,
                         state_press=0,
+                        radius=(10,10,10,10),
                         height=self.calculate_card_height(zekr, desc)
                     ),
                 )

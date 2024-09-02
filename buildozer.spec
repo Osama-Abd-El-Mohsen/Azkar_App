@@ -13,7 +13,7 @@ package.domain = org.me
 source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = py,png,jpg,kv,atlas,ttf,json,wav,ico
+source.include_exts = py,png,jpg,kv,atlas,ttf,json,wav,ico,csv
 
 # (list) List of inclusions using pattern matching
 #source.include_patterns = assets/*,images/*.png
@@ -37,7 +37,7 @@ version = 2.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3, kivy==2.3.0, https://github.com/kivymd/KivyMD/archive/master.zip, materialyoucolor, exceptiongroup, asyncgui, asynckivy, Pillow,python-bidi,arabic_reshaper,plyer==2.0.0,oscpy 
+requirements = python3, kivy==2.3.0, https://github.com/kivymd/KivyMD/archive/master.zip, materialyoucolor, exceptiongroup, asyncgui, asynckivy, Pillow,python-bidi,arabic_reshaper,plyer==2.0.0,oscpy,pandas 
 
 
 # (str) Custom source folders for requirements
@@ -46,10 +46,10 @@ requirements = python3, kivy==2.3.0, https://github.com/kivymd/KivyMD/archive/ma
 
 # (str) Presplash of the application
 # presplash.filename = %(source.dir)s/app_splash.png
-# presplash.filename = Assets/logo.png
+presplash.filename = Assets/logo.png
 
 # (str) Icon of the application
-# icon.filename = Assets/icon.png
+icon.filename = Assets/icon.png
 
 # (list) Supported orientations
 # Valid options are: landscape, portrait, portrait-reverse or landscape-reverse
