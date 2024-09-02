@@ -34,7 +34,10 @@ jobs:
                             libpython3-dev zlib1g-dev libncurses5-dev libgdbm-dev \
                             libnss3-dev libsqlite3-dev libreadline-dev libbz2-dev \
                             liblzma-dev tk-dev libxml2-dev libxmlsec1-dev libffi-dev \
-                            liblzma-dev git zip unzip openjdk-8-jdk
+                            autopoint \
+                            liblzma-dev git zip unzip openjdk-8-jdk \
+                            liblzma-dev \  
+
 
     - name: Install pip dependencies
       run: |
