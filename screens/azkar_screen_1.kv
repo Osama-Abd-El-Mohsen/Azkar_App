@@ -1,3 +1,4 @@
+#:import MDActionBottomAppBarButton kivymd.uix.appbar.MDActionBottomAppBarButton
 <AzkarScreen_1>:
     name: 'Azkar Screen_1'
     app: app
@@ -50,15 +51,83 @@
 
         MDBoxLayout:
             orientation: 'vertical'
-            padding : dp(5)
-            spacing : dp(5)
+            padding : dp(15)
+            spacing : dp(20)
             halign:"center"
+
+            MDLabel:
+                id: label
+                text: "0/0"
+                pos_hint: {"center_x": .5}
+                adaptive_size:True
+                theme_text_color: "Custom"
+                theme_font_name: "Custom"
+                theme_font_size: "Custom"
+                font_name:"BBCairo"
+                text_color : "#f4f9fc"
+                font_size : dp(22)
 
             MDScrollView:
                 do_scroll_x: False
                 do_scroll_y: True
 
                 MDList:
-                    padding:dp(15)
-                    spacing:dp(20)
                     id:list
+        MDBoxLayout:
+            orientation: 'horizontal'
+            padding: dp(20)
+            size_hint_y: None 
+            height: "80dp"  
+
+
+            MDExtendedFabButton:
+                fab_state: "expand"
+                pos_hint: {"center_x": .5}
+                theme_bg_color: "Custom"
+                md_bg_color: rgba(17, 172, 104)
+                on_press: app.counter_func()
+                width: dp(100)
+                id : fab
+
+                MDExtendedFabButtonIcon:
+                    icon: "counter"
+                    theme_icon_color: "Custom"
+                    icon_color: "#101318"  
+
+                MDExtendedFabButtonText:
+                    id: counter
+                    text: "0/0"
+                    theme_text_color: "Custom"
+                    text_color: "#161a1d" 
+                    theme_font_size: "Custom"
+                    font_name:"BBPoppins"
+                    font_size : dp(20)
+
+
+            Widget: 
+                size_hint_x: 1 
+
+            MDFabBottomAppBarButton:
+                theme_icon_color: "Custom"
+                theme_bg_color: "Custom"
+                md_bg_color: "#161a1d"
+                icon_color: "#f4f9fc"  
+                icon: "arrow-left"
+                on_press: app.display_next()
+                max_text_length: 10
+                size_hint: None, None
+                size: "56dp", "56dp"
+                
+            Widget: 
+                size_hint_x: .1
+
+            MDFabBottomAppBarButton:
+                theme_icon_color: "Custom"
+                theme_bg_color: "Custom"
+                md_bg_color: "#161a1d"
+                icon_color: "#f4f9fc"  
+                icon: "arrow-right"
+                on_press: app.display_prev()
+                max_text_length: 10
+                size_hint: None, None
+                size: "56dp", "56dp"

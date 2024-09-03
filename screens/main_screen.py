@@ -10,7 +10,7 @@ class MainScreen(F.Screen):
                 self.parent.add_widget(self.get_screen_object_from_screen_name('Azkar Screen_1'))
         if 'Loading Screen' not in self.parent.screen_names:
             self.parent.add_widget(self.get_screen_object_from_screen_name('Loading Screen'))
-        
+
 
     def get_screen_object_from_screen_name(self, screen_name):
         screen_module_in_str = "_".join([i.lower() for i in screen_name.split()])

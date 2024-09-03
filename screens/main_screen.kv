@@ -1,77 +1,26 @@
+#:import Label kivy.uix.label.Label
+#:import Button kivy.uix.button.Button
+#:import ButtonMd kivymd.uix.button.MDButton
+#:import ButtonText kivymd.uix.button.MDButtonText
+#:import ButtonIcon kivymd.uix.button.MDIconButton
+
 <MainScreen>:
     name: 'Main Screen'
     app: app
     
-    MDTopAppBar:
-        theme_bg_color: "Custom"
-        md_bg_color: '#161a1d'
-        type: "small"
-        pos_hint: {"top": 1}
-        MDTopAppBarLeadingButtonContainer:
-
-        MDTopAppBarTitle:
-            text: "أذكاري"
-            theme_text_color: "Custom"
-            theme_font_name: "Custom"
-            theme_font_size: "Custom"
-            font_name:"BBCairo"
-            font_script_name: "Arab"
-            font_direction: "rtl"
-            text_color : "#f4f9fc"
-            font_size : dp(22)
-            pos_hint: {"center_x": .5}
-
-        MDTopAppBarTrailingButtonContainer:
-            MDActionTopAppBarButton:
-                icon: "information"
-                on_release: app.info_dialog()  
-                theme_icon_color: "Custom"
-                theme_bg_color: "Custom"
-                theme_font_size: "Custom"
-                font_size: dp(20)
-                size_hint: None ,None
-                size: dp(20), dp(20)                 
-                md_bg_color: "#101318"
-                icon_color: "#f4f9fc"  
-
-    # MDScrollView:
-    #     MDList:
-    #         id:list
-
     MDBoxLayout:
         orientation: 'vertical'
-        padding : dp(15)
         spacing : dp(15)
-        size_hint:None,None
-        pos_hint: {"center_x": .5, "center_y": .5}
         halign:"center"
-        
-
-        MDButton:
-            styke:"filled"
-            pos_hint: {"center_x": .5, "center_y": .5}
-            theme_icon_color: "Custom"
+        MDTopAppBar:
             theme_bg_color: "Custom"
-            theme_font_size: "Custom"
-            md_bg_color: "#161a1d"
-            icon_color: "#f4f9fc" 
-            height: "56dp"
-            adaptive_size : True
-            on_press:app.get_azkar("أذكار الصباح")
+            md_bg_color: '#161a1d'
+            type: "small"
+            pos_hint: {"top": 1}
+            MDTopAppBarLeadingButtonContainer:
 
-            MDButtonIcon:
-                icon: "mosque"
-                theme_icon_color: "Custom"
-                theme_bg_color: "Custom"
-                theme_font_size: "Custom"
-                md_bg_color: "#161a1d"
-                icon_color: "#11ac68" 
-                font_size: dp(25)
-                size_hint: None ,None
-                size: "25dp", "25dp"
-            MDButtonText:
-                pos_hint: {"right": .9,"center_y": .5}
-                text: "أذكار الصباح"  
+            MDTopAppBarTitle:
+                text: "أذكاري"
                 theme_text_color: "Custom"
                 theme_font_name: "Custom"
                 theme_font_size: "Custom"
@@ -80,36 +29,68 @@
                 font_direction: "rtl"
                 text_color : "#f4f9fc"
                 font_size : dp(22)
+                pos_hint: {"center_x": .5}
 
-        MDButton:
-            styke:"filled"
-            pos_hint: {"center_x": .5, "center_y": .5}
-            theme_icon_color: "Custom"
-            theme_bg_color: "Custom"
-            theme_font_size: "Custom"
-            md_bg_color: "#161a1d"
-            icon_color: "#f4f9fc" 
-            height: "56dp"
-            on_press:app.get_azkar("أذكار المساء")
+            MDTopAppBarTrailingButtonContainer:
+                MDActionTopAppBarButton:
+                    icon: "information"
+                    on_release: app.info_dialog()  
+                    theme_icon_color: "Custom"
+                    theme_bg_color: "Custom"
+                    theme_font_size: "Custom"
+                    font_size: dp(20)
+                    size_hint: None ,None
+                    size: dp(20), dp(20)                 
+                    md_bg_color: "#101318"
+                    icon_color: "#f4f9fc"  
 
-            MDButtonIcon:
-                icon: "mosque"
-                theme_icon_color: "Custom"
-                theme_bg_color: "Custom"
-                theme_font_size: "Custom"
-                md_bg_color: "#161a1d"
-                icon_color: "#11ac68" 
-                font_size: dp(25)
-                size_hint: None ,None
-                size: "25dp", "25dp"
-            MDButtonText:
-                pos_hint: {"right": .9,"center_y": .5}
-                text: "أذكار المساء"  
-                theme_text_color: "Custom"
-                theme_font_name: "Custom"
-                theme_font_size: "Custom"
-                font_name:"BBCairo"
-                font_script_name: "Arab"
-                font_direction: "rtl"
-                text_color : "#f4f9fc"
-                font_size : dp(22)
+        MDScrollView:
+            do_scroll_x: False
+            do_scroll_y: True
+
+            MDBoxLayout:
+                orientation: 'vertical'
+                padding : dp(20)
+                spacing : dp(20)
+                adaptive_size:True
+                halign:"center"
+                id:list
+                size_hint:(1, None)
+                pos_hint: {"center_x": .5,"center_y": .5}
+
+                MDButton:
+                    styke:"filled"
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    theme_icon_color: "Custom"
+                    theme_bg_color: "Custom"
+                    theme_font_size: "Custom"
+                    theme_width: "Custom"
+                    md_bg_color: "#161a1d"
+                    icon_color: "#f4f9fc" 
+                    on_press:app.get_azkar("أذكار الصباح")
+                    size_hint: 1,1
+                    height:dp(70)
+                    radius:(15,15,15,15)
+
+
+                    MDButtonIcon:
+                        icon: "mosque"
+                        theme_icon_color: "Custom"
+                        theme_bg_color: "Custom"
+                        theme_font_size: "Custom"
+                        md_bg_color: "#161a1d"
+                        icon_color: "#11ac68" 
+                        font_size: dp(16)
+                        size: "16dp", "16dp"
+                        
+                    MDButtonText:
+                        pos_hint: {"right": .95,"center_y": .5}
+                        text: "أذكار الصباح"  
+                        theme_text_color: "Custom"
+                        theme_font_name: "Custom"
+                        theme_font_size: "Custom"
+                        font_name:"BBCairo"
+                        font_script_name: "Arab"
+                        font_direction: "rtl"
+                        text_color : "#f4f9fc"
+                        font_size : dp(16)

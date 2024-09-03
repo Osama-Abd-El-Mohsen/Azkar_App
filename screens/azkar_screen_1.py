@@ -9,6 +9,7 @@ class AzkarScreen_1(F.Screen):
         print("-"*50)
         print(self)
         print("-"*50)
+        
         # parent_manager = self.parent
         # if 'Loading Screen' not in parent_manager.screen_names:
         #     parent_manager.add_widget(self.get_screen_object_from_screen_name('Loading Screen'))
