@@ -1,9 +1,3 @@
-#:import Label kivy.uix.label.Label
-#:import Button kivy.uix.button.Button
-#:import ButtonMd kivymd.uix.button.MDButton
-#:import ButtonText kivymd.uix.button.MDButtonText
-#:import ButtonIcon kivymd.uix.button.MDIconButton
-
 <MainScreen>:
     name: 'Main Screen'
     app: app
@@ -70,20 +64,20 @@
                     on_press:app.get_azkar("أذكار الصباح")
                     size_hint: 1,1
                     height:dp(70)
-                    radius:(15,15,15,15)
+                    radius:(30,30,30,30)
                     state_hover:0
                     state_press:0
                     ripple_scale:0
 
-                    MDButtonIcon:
-                        icon: "mosque"
-                        theme_icon_color: "Custom"
-                        theme_bg_color: "Custom"
-                        theme_font_size: "Custom"
-                        md_bg_color: "#161a1d"
-                        icon_color: "#11ac68" 
-                        font_size: dp(16)
-                        size: "16dp", "16dp"
+                    # MDButtonIcon:
+                    #     icon: "mosque"
+                    #     theme_icon_color: "Custom"
+                    #     theme_bg_color: "Custom"
+                    #     theme_font_size: "Custom"
+                    #     md_bg_color: "#161a1d"
+                    #     icon_color: "#11ac68" 
+                    #     font_size: dp(16)
+                    #     size: "16dp", "16dp"
                         
                     MDButtonText:
                         pos_hint: {"right": .95,"center_y": .5}

@@ -24,8 +24,22 @@ if platform != "android":
     Window.always_on_top = True
 import datetime
 Window.clearcolor = (16/255, 19/255, 24/255, 1)
+import importlib
 
 class MyScreenManager(ScreenManager):
+    def __init__(self, **kwargs):
+        super(MyScreenManager, self).__init__(**kwargs)
+        self.add_widget(self.get_screen_object_from_screen_name('Main Screen'))
+        Clock.schedule_once(lambda dt: setattr(self, 'current', 'Main Screen'), 3)
+    
+    def get_screen_object_from_screen_name(self, screen_name):
+        screen_module_in_str = "_".join([i.lower() for i in screen_name.split()])
+        screen_object_in_str = "".join(screen_name.split())
+        module = importlib.import_module(f"screens.{screen_module_in_str}")
+        screen_class = getattr(module, screen_object_in_str)
+        screen_object = screen_class()
+        
+        return screen_object
     pass
 
 
@@ -259,7 +273,7 @@ class MainApp(MDApp):
                     padding=(10, 10, 10, 10),
                     state_hover=0,
                     state_press=0,
-                    radius=(15,15,15,15),
+                    radius=(30,30,30,30),
                     height=self.calculate_card_height(zekr, desc)
                 ),
             )
@@ -383,7 +397,7 @@ class MainApp(MDApp):
                     padding=(10, 10, 10, 10),
                     state_hover=0,
                     state_press=0,
-                    radius=(15,15,15,15),
+                    radius=(30,30,30,30),
                     height=self.calculate_card_height(zekr, desc)
                 ),
             )
@@ -407,16 +421,16 @@ class MainApp(MDApp):
             if cat != "أذكار الصباح":
                 self.screen_manager.get_screen('Main Screen').ids['list'].add_widget(
                     MDCard(
-                        MDButtonIcon(
-                            icon= "mosque",
-                            theme_icon_color= "Custom",
-                            theme_bg_color= "Custom",
-                            theme_font_size= "Custom",
-                            md_bg_color= "#161a1d",
-                            icon_color= "#11ac68" ,
-                            font_size= dp(16),
-                            size= ("16dp", "16dp"),
-                        ),
+                        # MDButtonIcon(
+                        #     icon= "mosque",
+                        #     theme_icon_color= "Custom",
+                        #     theme_bg_color= "Custom",
+                        #     theme_font_size= "Custom",
+                        #     md_bg_color= "#161a1d",
+                        #     icon_color= "#11ac68" ,
+                        #     font_size= dp(16),
+                        #     size= ("16dp", "16dp"),
+                        # ),
                         MDBoxLayout(
                             MDLabel(
                                 text=cat,
@@ -441,10 +455,10 @@ class MainApp(MDApp):
                         pos_hint={"center_x": .5, "center_y": .5},
                         theme_bg_color="Custom",
                         md_bg_color="#161a1d",
-                        padding=(20, 20, 20, 20),
+                        padding=(30, 30, 30, 30),
                         state_hover=0,
                         state_press=0,
-                        radius=(15,15,15,15),
+                        radius=(30,30,30,30),
                         on_press=partial(self.get_azkar,cat),
                         size_hint=(1, None),
                         height=dp(70),
@@ -489,8 +503,6 @@ class MainApp(MDApp):
         self.theme_cls.theme_style = "Dark"
         self.theme_cls.primary_palette = "Green"
 
-        self.screen_manager.add_widget(self.get_screen_object_from_screen_name('Loading Screen'))
-        self.screen_manager.current = 'Loading Screen'
         self.make_cats()
         return self.screen_manager
 

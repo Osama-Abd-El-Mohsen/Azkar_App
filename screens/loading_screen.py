@@ -7,6 +7,7 @@ class LoadingScreen(F.Screen):
     parent1=''
     state = 0 
     def on_pre_enter(self):
+        print("innnnnnnnnnnnnnn")
         if self.state == 0:
             self.parent1 = self.parent
             self.state = 1
