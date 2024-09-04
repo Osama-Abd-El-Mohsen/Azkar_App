@@ -24,14 +24,6 @@ def send_reminder(*args):
         try :
             notificator.notify(
                 app_name="Azkary",
-                title="remember",
-                message="your azkar",
-                app_icon=f"Assets/ico.ico",
-                ticker="ticker test",
-                toast=False
-            )
-            notificator.notify(
-                app_name="Azkary",
                 title="افتكرى",
                 message="متنسيش تقرئى اذكار المساء 😊",
                 app_icon=f"Assets/ico.ico",
