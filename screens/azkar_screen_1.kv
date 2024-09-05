@@ -4,11 +4,13 @@
     app: app
     MDBoxLayout:
         orientation: 'vertical'
-        spacing : dp(15)
         halign:"center"
+        theme_bg_color: "Custom"
+        md_bg_color: app.custom_colors['background']
+        spacing : dp(20)
         MDTopAppBar:
             theme_bg_color: "Custom"
-            md_bg_color: '#161a1d'
+            md_bg_color: app.custom_colors['primary']
             type: "small"
             pos_hint: {"top": 1}
             MDTopAppBarLeadingButtonContainer:
@@ -18,11 +20,11 @@
                     theme_icon_color: "Custom"
                     theme_bg_color: "Custom"
                     theme_font_size: "Custom"
-                    font_size: dp(20)
+                    font_size: dp(25)
                     size_hint: None ,None
-                    size: dp(20), dp(20)                 
-                    md_bg_color: "#101318"
-                    icon_color: "#f4f9fc"  
+                    size: dp(25), dp(25)                 
+                    md_bg_color: app.custom_colors['primary']
+                    icon_color: app.custom_colors['accent'] 
 
             MDTopAppBarTitle:
                 text: "أذكاري"
@@ -32,7 +34,7 @@
                 font_name:"BBCairo"
                 font_script_name: "Arab"
                 font_direction: "rtl"
-                text_color : "#f4f9fc"
+                text_color : "#11ac68"
                 font_size : dp(22)
                 pos_hint: {"center_x": .5}
 
@@ -43,11 +45,23 @@
                     theme_icon_color: "Custom"
                     theme_bg_color: "Custom"
                     theme_font_size: "Custom"
+                    font_size: dp(25)
+                    size_hint: None ,None
+                    size: dp(25), dp(25)                 
+                    md_bg_color: app.custom_colors['primary']
+                    icon_color: app.custom_colors['accent'] 
+
+                MDActionTopAppBarButton:
+                    icon: "theme-light-dark"
+                    on_release: app.toggle_theme()  
+                    theme_icon_color: "Custom"
+                    theme_bg_color: "Custom"
+                    theme_font_size: "Custom"
                     font_size: dp(20)
                     size_hint: None ,None
                     size: dp(20), dp(20)                 
-                    md_bg_color: "#101318"
-                    icon_color: "#f4f9fc"  
+                    md_bg_color: app.custom_colors['primary']
+                    icon_color: app.custom_colors['accent'] 
 
         MDBoxLayout:
             orientation: 'vertical'
@@ -64,7 +78,7 @@
                 theme_font_name: "Custom"
                 theme_font_size: "Custom"
                 font_name:"BBCairo"
-                text_color : "#f4f9fc"
+                text_color : app.custom_colors['accent'] 
                 font_size : dp(22)
 
             MDScrollView:
@@ -82,8 +96,8 @@
             MDFabBottomAppBarButton:
                 theme_icon_color: "Custom"
                 theme_bg_color: "Custom"
-                md_bg_color: "#161a1d"
-                icon_color: "#f4f9fc"  
+                md_bg_color: app.custom_colors['primary']
+                icon_color: app.custom_colors['accent']  
                 icon: "arrow-left"
                 on_press: app.display_next()
                 max_text_length: 10
@@ -96,8 +110,8 @@
             MDFabBottomAppBarButton:
                 theme_icon_color: "Custom"
                 theme_bg_color: "Custom"
-                md_bg_color: "#161a1d"
-                icon_color: "#f4f9fc"  
+                md_bg_color: app.custom_colors['primary']
+                icon_color: app.custom_colors['accent']  
                 icon: "arrow-right"
                 on_press: app.display_prev()
                 max_text_length: 10
@@ -119,14 +133,14 @@
                 MDExtendedFabButtonIcon:
                     icon: "counter"
                     theme_icon_color: "Custom"
-                    icon_color: "#101318"  
+                    icon_color: app.custom_colors['primary'] 
 
                 MDExtendedFabButtonText:
                     id: counter
                     text: "0/0"
                     theme_text_color: "Custom"
                     theme_font_name: "Custom"
-                    text_color: "#161a1d" 
+                    text_color: app.custom_colors['primary'] 
                     theme_font_size: "Custom"
                     font_name:"BBCairo"
                     font_size : dp(20)

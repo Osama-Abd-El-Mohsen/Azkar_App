@@ -4,9 +4,10 @@ import webbrowser
 from kivymd.uix.divider import MDDivider
 from kivymd.uix.list import MDListItem, MDListItemLeadingIcon, MDListItemSupportingText
 from kivymd.uix.dialog import *
-from kivymd.uix.button import MDButton, MDButtonText, MDButtonIcon
-from kivy.uix.screenmanager import SlideTransition, WipeTransition, ScreenManager, Screen, NoTransition
+from kivymd.uix.button import MDButton, MDButtonText
+from kivy.uix.screenmanager import WipeTransition, ScreenManager, Screen, NoTransition
 from kivy.uix.widget import Widget
+from kivy.storage.jsonstore import JsonStore
 from kivy import platform
 from kivy.clock import Clock
 from oscpy.client import OSCClient
@@ -19,28 +20,17 @@ from kivymd.uix.boxlayout import MDBoxLayout
 from functools import partial
 from kivy.core.text import LabelBase
 from kivy.core.window import Window
+from kivy.properties import DictProperty
+
 if platform != "android":
     Window.size = (406, 762)
     Window.always_on_top = True
-import datetime
 Window.clearcolor = (16/255, 19/255, 24/255, 1)
-import importlib
+
 
 class MyScreenManager(ScreenManager):
     def __init__(self, **kwargs):
         super(MyScreenManager, self).__init__(**kwargs)
-        self.add_widget(self.get_screen_object_from_screen_name('Main Screen'))
-        Clock.schedule_once(lambda dt: setattr(self, 'current', 'Main Screen'), 3)
-    
-    def get_screen_object_from_screen_name(self, screen_name):
-        screen_module_in_str = "_".join([i.lower() for i in screen_name.split()])
-        screen_object_in_str = "".join(screen_name.split())
-        module = importlib.import_module(f"screens.{screen_module_in_str}")
-        screen_class = getattr(module, screen_object_in_str)
-        screen_object = screen_class()
-        
-        return screen_object
-    pass
 
 
 class MainApp(MDApp):
@@ -49,7 +39,72 @@ class MainApp(MDApp):
     description_list = []
     count_list = []
     reference_list = []
+    custom_colors = DictProperty()
 
+    light_mode_colors = {
+        "primary": [255/255, 255/255, 255/255, 1],  #"#FFFFFF"
+        "accent": [22/255, 26/255, 29/255, 1], # #161A1D
+        "background": [240/255, 248/255, 255/255, 1] ,  #"#F0F8FF"
+        "primary_dark" : [51/255, 60/255, 67/255, 1] #"#333c43"
+    }
+
+    dark_mode_colors = {
+        "primary": [22/255, 26/255, 29/255, 1], # #161A1D
+        "accent": [244/255, 249/255, 252/255, 1],  #F0F8FF
+        "background": [16/255, 19/255, 24/255, 1], #"#101318"
+        "primary_dark" : [194/255, 198/255, 201/255, 1]  #c2c6c9
+    }
+    def __init__(self, **kwargs):
+        super(MainApp, self).__init__(**kwargs)
+        Window.bind(on_keyboard=self.Android_back_click)
+
+
+    def Android_back_click(self,window,key,*largs):
+        if key in [27, 1001]:
+            self.root.transition = WipeTransition()
+            self.root.current = 'Main Screen'
+            return True
+
+    def build(self):
+        self.stored_data = JsonStore('data.json')
+        self.load_from_JSON()
+        
+        self.screen_manager = MyScreenManager()
+        self.theme_cls.theme_style = style_state
+        if style_state == 'Light':
+            self.custom_colors = self.light_mode_colors
+        else : self.custom_colors = self.dark_mode_colors
+
+        self.theme_cls.primary_palette = "Green"
+        self.set_bars_colors()
+        if 'Main Screen' not in self.screen_manager.screen_names:
+            self.screen_manager.add_widget(self.get_screen_object_from_screen_name('Main Screen'))
+        self.make_cats()
+        return self.screen_manager
+
+    def load_from_JSON(self):
+        global style_state
+        style_state = self.stored_data.get('style')['List2']
+        print("="*10+"\n"+"From Main Load")
+        print(style_state)
+        print("="*10)
+    
+    
+    def save_to_JSON(self):
+        self.stored_data.put('style', List2=style_state)
+
+    def toggle_theme(self):
+        global style_state
+        if self.theme_cls.theme_style == "Light":
+            self.theme_cls.theme_style = "Dark" 
+            style_state = "Dark"
+            self.custom_colors = self.dark_mode_colors
+
+        else:
+            self.theme_cls.theme_style = "Light" 
+            style_state = "Light"
+            self.custom_colors = self.light_mode_colors
+        self.save_to_JSON()
     def set_bars_colors(self):
         set_bars_colors(
             [22/255, 26/255, 29/255,1],
@@ -153,7 +208,111 @@ class MainApp(MDApp):
 
     def add_zekr_card(self,zekr,desc,count,ref):
         self.screen_manager.get_screen('Azkar Screen_1').ids['list'].clear_widgets()
-        if len(desc) != 1:
+        if desc == '22' :
+            self.screen_manager.get_screen('Azkar Screen_1').ids['list'].add_widget(
+                MDCard(
+                    MDBoxLayout(
+                        MDBoxLayout(
+                            MDLabel(
+                                text=f"{zekr}",
+                                theme_text_color="Custom",
+                                theme_font_name="Custom",
+                                theme_font_size="Custom",
+                                font_name="BDroidKufi",
+                                text_color=self.custom_colors['accent'] ,
+                                font_script_name="Arab",
+                                font_size=dp(15),
+                                halign='center',
+                                font_direction="rtl",
+                            ),
+                            orientation='horizontal',
+                            # md_bg_color="#789987",
+
+                        ),
+                        
+
+                        MDBoxLayout(
+                            MDBoxLayout(
+                                MDLabel(
+                                    text="الملك",
+                                    adaptive_size=True,
+                                    theme_text_color="Custom",
+                                    theme_font_name="Custom",
+                                    theme_font_size="Custom",
+                                    font_name="BBCairo",
+                                    font_script_name="Arab",
+                                    font_direction="rtl",
+                                    text_color=self.custom_colors['primary_dark'],
+                                    font_size=dp(12),
+                                ),
+                                MDLabel(
+                                    text=f"سورة : ",
+                                    adaptive_size=True,
+                                    theme_text_color="Custom",
+                                    theme_font_name="Custom",
+                                    theme_font_size="Custom",
+                                    font_name="BBCairo",
+                                    font_script_name="Arab",
+                                    font_direction="rtl",
+                                    text_color="#11ac68",
+                                    font_size=dp(12),
+                                ),
+                                orientation='horizontal',
+                                size_hint=(1, .2),
+                                pos_hint={"left": 1},
+                            ),
+                            MDBoxLayout(
+                                MDLabel(
+                                    text=f"{int(float(count))}",
+                                    halign='left',
+                                    adaptive_size=True,
+                                    theme_text_color="Custom",
+                                    theme_font_name="Custom",
+                                    theme_font_size="Custom",
+                                    font_name="BBCairo",
+                                    text_color=self.custom_colors['primary_dark'],
+                                    font_size=dp(12),
+                                ),
+                                MDLabel(
+                                    text=f"عدد المرات : ",
+                                    halign='left',
+                                    adaptive_size=True,
+                                    theme_text_color="Custom",
+                                    theme_font_name="Custom",
+                                    theme_font_size="Custom",
+                                    font_name="BBCairo",
+                                    font_script_name="Arab",
+                                    font_direction="rtl",
+                                    text_color="#11ac68",
+                                    font_size=dp(12),
+                                ),
+                                orientation='horizontal',
+                                size_hint=(.4, .2),
+
+                            ),
+                            orientation='horizontal',
+                            # md_bg_color="#789987",
+                            size_hint_y=0.1
+                        ),
+                        orientation='vertical',
+                        padding=dp(5),
+                        spacing=dp(5),
+
+                    ),
+                    style="filled",
+                    pos_hint={"center_x": .5, "center_y": .5},
+                    theme_bg_color="Custom",
+                    md_bg_color=self.custom_colors['primary'],
+                    size_hint=(.5, None),
+                    padding=(10, 10, 10, 10),
+                    state_hover=0,
+                    state_press=0,
+                    radius=(30,30,30,30),
+                    height=self.calculate_card_height(zekr, desc)
+                ),
+            )
+
+        elif len(desc) != 1:
             self.screen_manager.get_screen('Azkar Screen_1').ids['list'].add_widget(
                 MDCard(
                     MDBoxLayout(
@@ -164,7 +323,7 @@ class MainApp(MDApp):
                                 theme_font_name="Custom",
                                 theme_font_size="Custom",
                                 font_name="BBCairo",
-                                text_color="#f4f9fc",
+                                text_color=self.custom_colors['accent'] ,
                                 font_script_name="Arab",
                                 font_size=dp(15),
                                 halign='center',
@@ -204,7 +363,7 @@ class MainApp(MDApp):
                                     font_name="BBCairo",
                                     font_script_name="Arab",
                                     font_direction="rtl",
-                                    text_color="#c2c6c9",
+                                    text_color=self.custom_colors['primary_dark'],
                                     font_size=dp(12),
                                 ),
                                 MDLabel(
@@ -232,7 +391,7 @@ class MainApp(MDApp):
                                     theme_font_name="Custom",
                                     theme_font_size="Custom",
                                     font_name="BBCairo",
-                                    text_color="#c2c6c9",
+                                    text_color=self.custom_colors['primary_dark'],
                                     font_size=dp(12),
                                 ),
                                 MDLabel(
@@ -261,14 +420,10 @@ class MainApp(MDApp):
                         spacing=dp(5),
 
                     ),
-                    style="elevated",
+                    style="filled",
                     pos_hint={"center_x": .5, "center_y": .5},
                     theme_bg_color="Custom",
-                    md_bg_color="#161a1d",
-                    theme_shadow_softness="Custom",
-                    shadow_softness=15,
-                    theme_elevation_level="Custom",
-                    elevation_level=1,
+                    md_bg_color=self.custom_colors['primary'],
                     size_hint=(.5, None),
                     padding=(10, 10, 10, 10),
                     state_hover=0,
@@ -288,7 +443,7 @@ class MainApp(MDApp):
                                 theme_font_name="Custom",
                                 theme_font_size="Custom",
                                 font_name="BBCairo",
-                                text_color="#f4f9fc",
+                                text_color=self.custom_colors['accent'] ,
                                 font_script_name="Arab",
                                 font_size=dp(15),
                                 halign='center',
@@ -328,7 +483,7 @@ class MainApp(MDApp):
                                     font_name="BBCairo",
                                     font_script_name="Arab",
                                     font_direction="rtl",
-                                    text_color="#c2c6c9",
+                                    text_color=self.custom_colors['primary_dark'],
                                     font_size=dp(12),
                                 ),
                                 MDLabel(
@@ -356,7 +511,7 @@ class MainApp(MDApp):
                                     theme_font_name="Custom",
                                     theme_font_size="Custom",
                                     font_name="BBCairo",
-                                    text_color="#c2c6c9",
+                                    text_color=self.custom_colors['primary_dark'],
                                     font_size=dp(12),
                                 ),
                                 MDLabel(
@@ -385,14 +540,10 @@ class MainApp(MDApp):
                         spacing=dp(5),
 
                     ),
-                    style="elevated",
+                    style="filled",
                     pos_hint={"center_x": .5, "center_y": .5},
                     theme_bg_color="Custom",
-                    md_bg_color="#161a1d",
-                    theme_shadow_softness="Custom",
-                    shadow_softness=15,
-                    theme_elevation_level="Custom",
-                    elevation_level=1,
+                    md_bg_color=self.custom_colors['primary'],
                     size_hint=(.5, None),
                     padding=(10, 10, 10, 10),
                     state_hover=0,
@@ -407,30 +558,18 @@ class MainApp(MDApp):
             print("in zero")
             fab.opacity= 0.0
             counter.text=''
-            counter.text_color = '#101318'
+            counter.text_color = self.custom_colors['background'] 
         else :
-            counter.text_color = '#161a1d'
+            counter.text_color = self.custom_colors['primary'] 
             fab.opacity= 1.0
         
 
     def make_cats(self):
-        # self.screen_manager.transition = WipeTransition()
-        # self.screen_manager.current = 'Loading Screen'
         cats = self.azkar_data['category'].unique()
         for cat in cats : 
             if cat != "أذكار الصباح":
                 self.screen_manager.get_screen('Main Screen').ids['list'].add_widget(
                     MDCard(
-                        # MDButtonIcon(
-                        #     icon= "mosque",
-                        #     theme_icon_color= "Custom",
-                        #     theme_bg_color= "Custom",
-                        #     theme_font_size= "Custom",
-                        #     md_bg_color= "#161a1d",
-                        #     icon_color= "#11ac68" ,
-                        #     font_size= dp(16),
-                        #     size= ("16dp", "16dp"),
-                        # ),
                         MDBoxLayout(
                             MDLabel(
                                 text=cat,
@@ -438,7 +577,7 @@ class MainApp(MDApp):
                                 theme_font_name="Custom",
                                 theme_font_size="Custom",
                                 font_name="BBCairo",
-                                text_color="#f4f9fc",
+                                text_color=self.custom_colors['accent'] ,
                                 font_script_name="Arab",
                                 font_size=dp(16),
                                 halign='right',
@@ -451,10 +590,10 @@ class MainApp(MDApp):
 
                         ),
 
-                        style="elevated",
+                        style="filled",
                         pos_hint={"center_x": .5, "center_y": .5},
                         theme_bg_color="Custom",
-                        md_bg_color="#161a1d",
+                        md_bg_color=self.custom_colors['primary'],
                         padding=(30, 30, 30, 30),
                         state_hover=0,
                         state_press=0,
@@ -468,8 +607,6 @@ class MainApp(MDApp):
 
     def get_azkar(self, zekr_cat: str,*args):
         self.restart_generator()
-        # self.screen_manager.transition = WipeTransition()
-        # self.screen_manager.current = 'Loading Screen'
         self.cat_data = self.azkar_data[self.azkar_data.category == zekr_cat]
         self.cat_data.apply(self.get_cat_data, axis=1)
         self.display_next()
@@ -488,23 +625,6 @@ class MainApp(MDApp):
 ####################### Android Service ##########################
 
 ####################### Build App Function #######################
-    def __init__(self, **kwargs):
-        super(MainApp, self).__init__(**kwargs)
-        Window.bind(on_keyboard=self.Android_back_click)
-
-    def Android_back_click(self,window,key,*largs):
-        if key in [27, 1001]:
-            self.root.transition = WipeTransition()
-            self.root.current = 'Main Screen'
-            return True
-
-    def build(self):
-        self.screen_manager = MyScreenManager()
-        self.theme_cls.theme_style = "Dark"
-        self.theme_cls.primary_palette = "Green"
-
-        self.make_cats()
-        return self.screen_manager
 
     def get_screen_object_from_screen_name(self, screen_name):
         screen_module_in_str = "_".join(
@@ -549,6 +669,7 @@ class MainApp(MDApp):
             raise NotImplementedError(
                 "service start not implemented on this platform"
             )
+
 ####################### Events Function ##########################
 
 
@@ -567,7 +688,7 @@ class MainApp(MDApp):
                 theme_font_name="Custom",
                 theme_font_size="Custom",
                 font_name="BPoppins",
-                text_color="#f4f9fc",
+                text_color=self.custom_colors['accent'] ,
                 font_size=dp(18),
             ),
             MDDialogSupportingText(
@@ -577,7 +698,7 @@ class MainApp(MDApp):
                 theme_font_name="Custom",
                 theme_font_size="Custom",
                 font_name="MPoppins",
-                text_color="#f4f9fc",
+                text_color=self.custom_colors['accent'] ,
                 font_size=dp(13),
             ),
 
@@ -595,7 +716,7 @@ class MainApp(MDApp):
                         theme_font_name="Custom",
                         theme_font_size="Custom",
                         font_name="MPoppins",
-                        text_color="#f4f9fc",
+                        text_color=self.custom_colors['accent'] ,
                         font_size=dp(10),
                     ),
                     on_press=self.info_email_link,
@@ -614,7 +735,7 @@ class MainApp(MDApp):
                         theme_font_name="Custom",
                         theme_font_size="Custom",
                         font_name="MPoppins",
-                        text_color="#f4f9fc",
+                        text_color=self.custom_colors['accent'] ,
                         font_size=dp(10),
 
                     ),
@@ -635,12 +756,12 @@ class MainApp(MDApp):
                         theme_font_name="Custom",
                         theme_font_size="Custom",
                         font_name="BPoppins",
-                        text_color="#f4f9fc",
+                        text_color=self.custom_colors['accent'] ,
                         font_size=dp(13),
                     ),
                     style="tonal",
                     theme_bg_color="Custom",
-                    md_bg_color="#101318",
+                    md_bg_color=self.custom_colors['background'] ,
                     on_press=self.close_info_dialog
                 ),
 
@@ -648,7 +769,7 @@ class MainApp(MDApp):
             ),
             id="infodialog",
             theme_bg_color="Custom",
-            _md_bg_color="#161a1d",
+            _md_bg_color=self.custom_colors['primary'],
             state_hover=0,
             state_press=0,
         )
@@ -675,6 +796,10 @@ if __name__ == "__main__":
         name="BPoppins", fn_regular="font/Poppins/Poppins-Bold.ttf")
     LabelBase.register(
         name="MPoppins", fn_regular="font/Poppins/Poppins-Medium.ttf")
+    LabelBase.register(
+        name="BDroidKufi", fn_regular="font/DroidKufi/DroidKufi-Bold.ttf")
+    LabelBase.register(
+        name="RDroidKufi", fn_regular="font/DroidKufi/DroidKufi-Regular.ttf")
 
     MainApp().run()
 ####################### Main ####################################
