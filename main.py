@@ -104,12 +104,14 @@ class MainApp(MDApp):
             self.theme_cls.theme_style = "Light" 
             style_state = "Light"
             self.custom_colors = self.light_mode_colors
+        self.set_bars_colors()
         self.save_to_JSON()
+
     def set_bars_colors(self):
         set_bars_colors(
-            [22/255, 26/255, 29/255,1],
-            [16/255, 19/255, 24/255,1],
-            "Light"
+            self.custom_colors['primary'],
+            self.custom_colors['background'],
+            "Light" if style_state == "Dark" else "Light" 
         )
 ####################### Helper Functions #########################
     def go_main(self):
@@ -325,7 +327,7 @@ class MainApp(MDApp):
                                 font_name="BBCairo",
                                 text_color=self.custom_colors['accent'] ,
                                 font_script_name="Arab",
-                                font_size=dp(15),
+                                font_size=dp(16),
                                 halign='center',
                                 font_direction="rtl",
                             ),
@@ -445,30 +447,13 @@ class MainApp(MDApp):
                                 font_name="BBCairo",
                                 text_color=self.custom_colors['accent'] ,
                                 font_script_name="Arab",
-                                font_size=dp(15),
+                                font_size=dp(16),
                                 halign='center',
                                 font_direction="rtl",
                             ),
                             orientation='horizontal',
                             # md_bg_color="#789987",
 
-                        ),
-                        MDBoxLayout(
-                            MDLabel(
-                                text=f"{desc}",
-                                theme_text_color="Custom",
-                                theme_font_name="Custom",
-                                theme_font_size="Custom",
-                                font_name="BBCairo",
-                                text_color="#11ac68",
-                                font_size=dp(12),
-                                halign='center',
-                                font_script_name="Arab",
-                                font_direction="rtl",
-                            ),
-                            orientation='horizontal',
-                            # md_bg_color="#789987",
-                            size_hint=(1, None),
                         ),
 
                         MDBoxLayout(

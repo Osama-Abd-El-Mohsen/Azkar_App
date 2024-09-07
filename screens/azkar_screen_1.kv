@@ -20,9 +20,9 @@
                     theme_icon_color: "Custom"
                     theme_bg_color: "Custom"
                     theme_font_size: "Custom"
-                    font_size: dp(25)
+                    font_size: dp(26)
                     size_hint: None ,None
-                    size: dp(25), dp(25)                 
+                    size: dp(26), dp(26)                 
                     md_bg_color: app.custom_colors['primary']
                     icon_color: app.custom_colors['accent'] 
 
@@ -39,15 +39,16 @@
                 pos_hint: {"center_x": .5}
 
             MDTopAppBarTrailingButtonContainer:
+                spacing : dp(15)
                 MDActionTopAppBarButton:
                     icon: "information"
                     on_release: app.info_dialog()  
                     theme_icon_color: "Custom"
                     theme_bg_color: "Custom"
                     theme_font_size: "Custom"
-                    font_size: dp(25)
+                    font_size: dp(26)
                     size_hint: None ,None
-                    size: dp(25), dp(25)                 
+                    size: dp(26), dp(26)                 
                     md_bg_color: app.custom_colors['primary']
                     icon_color: app.custom_colors['accent'] 
 
@@ -57,9 +58,9 @@
                     theme_icon_color: "Custom"
                     theme_bg_color: "Custom"
                     theme_font_size: "Custom"
-                    font_size: dp(20)
+                    font_size: dp(26)
                     size_hint: None ,None
-                    size: dp(20), dp(20)                 
+                    size: dp(26), dp(26)                 
                     md_bg_color: app.custom_colors['primary']
                     icon_color: app.custom_colors['accent'] 
 
@@ -129,6 +130,11 @@
                 on_press: app.counter_func()
                 width: dp(100)
                 id : fab
+                theme_shadow_softness:"Custom"
+                shadow_softness:100
+                theme_elevation_level:"Custom"
+                elevation_level:2
+
 
                 MDExtendedFabButtonIcon:
                     icon: "counter"
