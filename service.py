@@ -151,8 +151,5 @@ def send_reminder(*args):
 
 if __name__ == '__main__':
     SERVER = OSCThreadServer()
-    SERVER.listen('localhost', port=3000, default=True)
-    while True:
-        print("before while")
-        send_reminder()
-        sleep(1)
+    SERVER.listen('localhost', port=3001, default=True)
+    Clock.schedule_interval(send_reminder, 1)

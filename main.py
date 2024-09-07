@@ -94,11 +94,6 @@ class MainApp(MDApp):
     def save_to_JSON(self):
         self.stored_data.put('style', List2=style_state)
 
-    def restart(self):
-        self.root.clear_widgets()
-        self.stop()
-        return MainApp().run()
-
     def toggle_theme(self):
         global style_state
         if self.theme_cls.theme_style == "Light":
@@ -112,7 +107,6 @@ class MainApp(MDApp):
             self.custom_colors = self.light_mode_colors
         self.set_bars_colors()
         self.save_to_JSON()
-        self.restart()
 
     def set_bars_colors(self):
         set_bars_colors(
