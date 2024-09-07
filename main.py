@@ -1,18 +1,14 @@
 from kivymd.app import MDApp
 from kivymd.utils.set_bars_colors import set_bars_colors
-import webbrowser
 from kivymd.uix.divider import MDDivider
 from kivymd.uix.list import MDListItem, MDListItemLeadingIcon, MDListItemSupportingText
 from kivymd.uix.dialog import *
 from kivymd.uix.button import MDButton, MDButtonText
-from kivy.uix.screenmanager import WipeTransition, ScreenManager, Screen, NoTransition
+from kivy.uix.screenmanager import WipeTransition, ScreenManager
 from kivy.uix.widget import Widget
 from kivy.storage.jsonstore import JsonStore
 from kivy import platform
 from kivy.clock import Clock
-from oscpy.client import OSCClient
-from oscpy.server import OSCThreadServer
-import pandas as pd
 from kivy.metrics import dp
 from kivymd.uix.card import MDCard
 from kivymd.uix.label import MDLabel
@@ -21,6 +17,10 @@ from functools import partial
 from kivy.core.text import LabelBase
 from kivy.core.window import Window
 from kivy.properties import DictProperty
+import webbrowser
+from oscpy.client import OSCClient
+from oscpy.server import OSCThreadServer
+import pandas as pd
 
 if platform != "android":
     Window.size = (406, 762)
@@ -54,6 +54,7 @@ class MainApp(MDApp):
         "background": [16/255, 19/255, 24/255, 1], #"#101318"
         "primary_dark" : [194/255, 198/255, 201/255, 1]  #c2c6c9
     }
+
     def __init__(self, **kwargs):
         super(MainApp, self).__init__(**kwargs)
         Window.bind(on_keyboard=self.Android_back_click)
@@ -93,6 +94,11 @@ class MainApp(MDApp):
     def save_to_JSON(self):
         self.stored_data.put('style', List2=style_state)
 
+    def restart(self):
+        self.root.clear_widgets()
+        self.stop()
+        return MainApp().run()
+
     def toggle_theme(self):
         global style_state
         if self.theme_cls.theme_style == "Light":
@@ -106,12 +112,13 @@ class MainApp(MDApp):
             self.custom_colors = self.light_mode_colors
         self.set_bars_colors()
         self.save_to_JSON()
+        self.restart()
 
     def set_bars_colors(self):
         set_bars_colors(
             self.custom_colors['primary'],
             self.custom_colors['background'],
-            "Light" if style_state == "Dark" else "Light" 
+            "Dark" if self.theme_cls.theme_style == "Light" else "Light" 
         )
 ####################### Helper Functions #########################
     def go_main(self):
@@ -597,7 +604,6 @@ class MainApp(MDApp):
         self.display_next()
         self.screen_manager.current = 'Azkar Screen_1'
 
-
 ####################### Android Service ##########################
     def andoid_start_service(name, other_arg):
         from android import mActivity
@@ -612,11 +618,9 @@ class MainApp(MDApp):
 ####################### Build App Function #######################
 
     def get_screen_object_from_screen_name(self, screen_name):
-        screen_module_in_str = "_".join(
-            [i.lower() for i in screen_name.split()])
+        screen_module_in_str = "_".join([i.lower() for i in screen_name.split()])
         screen_object_in_str = "".join(screen_name.split())
-        exec(
-            f"from screens.{screen_module_in_str} import {screen_object_in_str}")
+        exec(f"from screens.{screen_module_in_str} import {screen_object_in_str}")
         screen_object = eval(f"{screen_object_in_str}()")
         
         return screen_object
@@ -777,14 +781,10 @@ class MainApp(MDApp):
 ####################### Main ####################################
 if __name__ == "__main__":
     LabelBase.register(name="BBCairo", fn_regular="font/cairo/Cairo-Black.ttf")
-    LabelBase.register(
-        name="BPoppins", fn_regular="font/Poppins/Poppins-Bold.ttf")
-    LabelBase.register(
-        name="MPoppins", fn_regular="font/Poppins/Poppins-Medium.ttf")
-    LabelBase.register(
-        name="BDroidKufi", fn_regular="font/DroidKufi/DroidKufi-Bold.ttf")
-    LabelBase.register(
-        name="RDroidKufi", fn_regular="font/DroidKufi/DroidKufi-Regular.ttf")
+    LabelBase.register(name="BPoppins", fn_regular="font/Poppins/Poppins-Bold.ttf")
+    LabelBase.register(name="MPoppins", fn_regular="font/Poppins/Poppins-Medium.ttf")
+    LabelBase.register(name="BDroidKufi", fn_regular="font/DroidKufi/DroidKufi-Bold.ttf")
+    LabelBase.register(name="RDroidKufi", fn_regular="font/DroidKufi/DroidKufi-Regular.ttf")
 
     MainApp().run()
 ####################### Main ####################################
