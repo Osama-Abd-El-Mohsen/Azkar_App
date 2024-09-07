@@ -29,7 +29,7 @@ source.include_exts = py,png,jpg,kv,atlas,ttf,json,wav,ico,csv
 #source.exclude_patterns = license,images/*/*.jpg
 
 # (str) Application versioning (method 1)
-version = 2.1
+version = 2.2
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]
@@ -98,7 +98,7 @@ android.presplash_color = #101318
 
 # (list) Permissions
 # (See https://python-for-android.readthedocs.io/en/latest/buildoptions/#build-options-1 for all the supported syntaxes and properties)
-android.permissions = INTERNET ,READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE,FOREGROUND_SERVICE,POST_NOTIFICATIONS
+android.permissions = INTERNET ,READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE,FOREGROUND_SERVICE,POST_NOTIFICATIONS,android.permission.INTERNET
 #android.permissions = INTERNET,ACCESS_NETWORK_STATE,android.permission.INTERNET, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE,(name=android.permission.WRITE_EXTERNAL_STORAGE;maxSdkVersion=18) 
 # (list) features (adds uses-feature -tags to manifest)
 #android.features = android.hardware.usb.host
@@ -286,8 +286,8 @@ android.add_resources = data/legal_icons:drawable
 
 # (list) The Android archs to build for, choices: armeabi-v7a, arm64-v8a, x86, x86_64
 # In past, was `android.arch` as we weren't supporting builds for multiple archs at the same time.
-# android.archs = arm64-v8a, armeabi-v7a
-android.archs = arm64-v8a
+android.archs = arm64-v8a, armeabi-v7a
+# android.archs = arm64-v8a
 
 # (int) overrides automatic versionCode computation (used in build.gradle)
 # this is not the same as app version and should only be edited if you know what you're doing
