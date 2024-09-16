@@ -4,7 +4,7 @@ from kivymd.uix.divider import MDDivider
 from kivymd.uix.list import MDListItem, MDListItemLeadingIcon, MDListItemSupportingText
 from kivymd.uix.dialog import *
 from kivymd.uix.button import MDButton, MDButtonText
-from kivy.uix.screenmanager import WipeTransition, ScreenManager
+from kivy.uix.screenmanager import WipeTransition, ScreenManager,NoTransition
 from kivy.uix.widget import Widget
 from kivy.storage.jsonstore import JsonStore
 from kivy import platform
@@ -21,6 +21,7 @@ import webbrowser
 from oscpy.client import OSCClient
 from oscpy.server import OSCThreadServer
 import pandas as pd
+from kivy.uix.image import Image
 
 if platform != "android":
     Window.size = (406, 762)
@@ -58,7 +59,6 @@ class MainApp(MDApp):
     def __init__(self, **kwargs):
         super(MainApp, self).__init__(**kwargs)
         Window.bind(on_keyboard=self.Android_back_click)
-
 
     def Android_back_click(self,window,key,*largs):
         if key in [27, 1001]:
@@ -198,8 +198,8 @@ class MainApp(MDApp):
     def display_next(self):
         try:
             counter_btn = self.screen_manager.get_screen('Azkar Screen_1').ids['counter']
-            self.counter = 0
             zekr, desc, self.count, ref = next(self.generator)
+            self.counter = 0
             counter_btn.text = str(self.counter) + '/' + f'{float(self.count):0.0f}'
             self.screen_manager.get_screen('Azkar Screen_1').ids['list'].clear_widgets()
             self.add_zekr_card(zekr,desc,self.count,ref)
@@ -208,6 +208,24 @@ class MainApp(MDApp):
 
         except StopIteration:
             print("End of list")
+            self.finish_animation_gif = 'Assets/finsh_animation.gif'
+            self.gif_widget = Image(
+                source=self.finish_animation_gif,
+                anim_delay=0.03, 
+                anim_loop = 1,)
+            if 'Finish Screen' not in self.screen_manager.screen_names:
+                self.screen_manager.add_widget(self.get_screen_object_from_screen_name('Finish Screen'))
+            if self.counter ==  self.count :
+                self.screen_manager.get_screen('Finish Screen').ids['box'].clear_widgets()
+                self.screen_manager.get_screen('Finish Screen').ids['box'].add_widget(self.gif_widget)
+                self.screen_manager.transition = NoTransition()
+                self.screen_manager.current = 'Finish Screen'
+                self.screen_manager.transition = WipeTransition()
+                Clock.schedule_once(self.go_to_main_screen, 2)
+
+    def go_to_main_screen(self, dt):
+        self.screen_manager.get_screen('Finish Screen').ids['box'].clear_widgets()
+        self.screen_manager.current = 'Main Screen'
 
     def add_zekr_card(self,zekr,desc,count,ref):
         self.screen_manager.get_screen('Azkar Screen_1').ids['list'].clear_widgets()

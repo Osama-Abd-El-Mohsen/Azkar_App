@@ -32,8 +32,8 @@
                 halign: "left"
 
             MDIconButton:
-                icon: "information"
-                on_release: app.info_dialog()  
+                icon: "theme-light-dark"
+                on_release: app.toggle_theme() 
                 theme_icon_color: "Custom"
                 theme_bg_color: "Custom"
                 theme_font_size: "Custom"
@@ -45,8 +45,8 @@
                 pos_hint: {"center_x": .5, "center_y": .5}
 
             MDIconButton:
-                icon: "theme-light-dark"
-                on_release: app.toggle_theme() 
+                icon: "information"
+                on_release: app.info_dialog()  
                 theme_icon_color: "Custom"
                 theme_bg_color: "Custom"
                 theme_font_size: "Custom"

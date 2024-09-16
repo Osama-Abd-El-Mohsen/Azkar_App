@@ -40,17 +40,6 @@
 
             MDTopAppBarTrailingButtonContainer:
                 spacing : dp(15)
-                MDActionTopAppBarButton:
-                    icon: "information"
-                    on_release: app.info_dialog()  
-                    theme_icon_color: "Custom"
-                    theme_bg_color: "Custom"
-                    theme_font_size: "Custom"
-                    font_size: dp(26)
-                    size_hint: None ,None
-                    size: dp(26), dp(26)                 
-                    md_bg_color: app.custom_colors['primary']
-                    icon_color: app.custom_colors['accent'] 
 
                 MDActionTopAppBarButton:
                     icon: "theme-light-dark"
@@ -64,11 +53,23 @@
                     md_bg_color: app.custom_colors['primary']
                     icon_color: app.custom_colors['accent'] 
 
+                MDActionTopAppBarButton:
+                    icon: "information"
+                    on_release: app.info_dialog()  
+                    theme_icon_color: "Custom"
+                    theme_bg_color: "Custom"
+                    theme_font_size: "Custom"
+                    font_size: dp(26)
+                    size_hint: None ,None
+                    size: dp(26), dp(26)                 
+                    md_bg_color: app.custom_colors['primary']
+                    icon_color: app.custom_colors['accent'] 
         MDBoxLayout:
             orientation: 'vertical'
             padding : dp(15)
             spacing : dp(20)
             halign:"center"
+            id : box
 
             MDLabel:
                 id: label
@@ -151,3 +152,4 @@
                     font_name:"BBCairo"
                     font_size : dp(20)
                     pos_hint : {"center_x":0.6,"center_y":0.5}
+            
