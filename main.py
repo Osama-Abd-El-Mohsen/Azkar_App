@@ -4,7 +4,7 @@ from kivymd.uix.divider import MDDivider
 from kivymd.uix.list import MDListItem, MDListItemLeadingIcon, MDListItemSupportingText
 from kivymd.uix.dialog import *
 from kivymd.uix.button import MDButton, MDButtonText
-from kivy.uix.screenmanager import WipeTransition, ScreenManager,NoTransition
+from kivy.uix.screenmanager import WipeTransition, ScreenManager
 from kivy.uix.widget import Widget
 from kivy.storage.jsonstore import JsonStore
 from kivy import platform
@@ -26,7 +26,7 @@ from kivy.uix.image import Image
 if platform != "android":
     Window.size = (406, 762)
     Window.always_on_top = True
-Window.clearcolor = (16/255, 19/255, 24/255, 1)
+Window.clearcolor = (22/255, 26/255, 29/255, 1)
 
 
 class MyScreenManager(ScreenManager):
@@ -144,6 +144,11 @@ class MainApp(MDApp):
     def counter_func(self):
         counter_btn = self.screen_manager.get_screen('Azkar Screen_1').ids['counter']
         self.counter+=1
+        progress_bar = self.screen_manager.get_screen('Azkar Screen_1').ids['progress_bar']
+        progress_bar.max = self.count 
+        progress_bar.value=self.counter
+        progress_bar.indicator_color =  "#11ac68"
+
         if self.counter < float(self.count) :
             counter_btn.text = str(self.counter) + '/' + f'{float(self.count):0.0f}'
         elif self.counter == float(self.count):
@@ -167,6 +172,8 @@ class MainApp(MDApp):
         label.text = str(self.current_item_index+1) + '/' + str(len(self.cat_data))
 
     def display_current(self):
+        progress_bar = self.screen_manager.get_screen('Azkar Screen_1').ids['progress_bar']
+        progress_bar.value=0
         try:
             self.change_label() 
             counter_btn = self.screen_manager.get_screen('Azkar Screen_1').ids['counter']
@@ -197,6 +204,9 @@ class MainApp(MDApp):
 
     def display_next(self):
         try:
+            progress_bar = self.screen_manager.get_screen('Azkar Screen_1').ids['progress_bar']
+            progress_bar.value = 0
+            progress_bar.indicator_color =  self.custom_colors['primary'] 
             counter_btn = self.screen_manager.get_screen('Azkar Screen_1').ids['counter']
             zekr, desc, self.count, ref = next(self.generator)
             self.counter = 0
@@ -208,24 +218,20 @@ class MainApp(MDApp):
 
         except StopIteration:
             print("End of list")
-            self.finish_animation_gif = 'Assets/finsh_animation.gif'
-            self.gif_widget = Image(
-                source=self.finish_animation_gif,
-                anim_delay=0.03, 
-                anim_loop = 1,)
-            if 'Finish Screen' not in self.screen_manager.screen_names:
-                self.screen_manager.add_widget(self.get_screen_object_from_screen_name('Finish Screen'))
             if self.counter ==  self.count :
-                self.screen_manager.get_screen('Finish Screen').ids['box'].clear_widgets()
-                self.screen_manager.get_screen('Finish Screen').ids['box'].add_widget(self.gif_widget)
-                self.screen_manager.transition = NoTransition()
+                gif_image_widget = self.screen_manager.get_screen('Finish Screen').ids['gif']
+                self.screen_manager.transition = WipeTransition()
+                gif_image_widget.anim_loop = 1 
+                gif_image_widget.anim_delay = 0.03
                 self.screen_manager.current = 'Finish Screen'
                 self.screen_manager.transition = WipeTransition()
                 Clock.schedule_once(self.go_to_main_screen, 2)
 
     def go_to_main_screen(self, dt):
-        self.screen_manager.get_screen('Finish Screen').ids['box'].clear_widgets()
+        gif_image_widget = self.screen_manager.get_screen('Finish Screen').ids['gif']
         self.screen_manager.current = 'Main Screen'
+        gif_image_widget.anim_delay = 0
+
 
     def add_zekr_card(self,zekr,desc,count,ref):
         self.screen_manager.get_screen('Azkar Screen_1').ids['list'].clear_widgets()

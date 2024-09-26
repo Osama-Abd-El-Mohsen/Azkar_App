@@ -2,31 +2,25 @@
 <FinishScreen>:
     name: 'Finish Screen'
     app: app
+
     MDBoxLayout:
         orientation: 'vertical'
+        spacing : dp(20)
         halign:"center"
         theme_bg_color: "Custom"
         md_bg_color: app.custom_colors['background']
-        spacing : dp(20)
-        MDTopAppBar:
+
+        MDBoxLayout:
             theme_bg_color: "Custom"
             md_bg_color: app.custom_colors['primary']
-            type: "small"
-            pos_hint: {"top": 1}
-            MDTopAppBarLeadingButtonContainer:
-                MDActionTopAppBarButton:
-                    icon: "arrow-left"
-                    on_release: app.go_main()  
-                    theme_icon_color: "Custom"
-                    theme_bg_color: "Custom"
-                    theme_font_size: "Custom"
-                    font_size: dp(26)
-                    size_hint: None ,None
-                    size: dp(26), dp(26)                 
-                    md_bg_color: app.custom_colors['primary']
-                    icon_color: app.custom_colors['accent'] 
+            orientation: 'horizontal'
+            padding: dp(15)
+            spacing: dp(15)
+            size_hint: 1, None
+            size: self.minimum_size
+            pos_hint: {"center_x": .5, "center_y": .5}
 
-            MDTopAppBarTitle:
+            MDLabel:
                 text: "أذكاري"
                 theme_text_color: "Custom"
                 theme_font_name: "Custom"
@@ -36,37 +30,41 @@
                 font_direction: "rtl"
                 text_color : "#11ac68"
                 font_size : dp(22)
-                pos_hint: {"center_x": .5}
+                halign: "left"
 
-            MDTopAppBarTrailingButtonContainer:
-                spacing : dp(15)
+            MDIconButton:
+                icon: "theme-light-dark"
+                on_release: app.toggle_theme() 
+                theme_icon_color: "Custom"
+                theme_bg_color: "Custom"
+                theme_font_size: "Custom"
+                font_size: dp(26)
+                size_hint: None ,None
+                size: dp(26), dp(26)                 
+                md_bg_color: app.custom_colors['primary']
+                icon_color: app.custom_colors['accent'] 
+                pos_hint: {"center_x": .5, "center_y": .5}
 
-                MDActionTopAppBarButton:
-                    icon: "theme-light-dark"
-                    on_release: app.toggle_theme()  
-                    theme_icon_color: "Custom"
-                    theme_bg_color: "Custom"
-                    theme_font_size: "Custom"
-                    font_size: dp(26)
-                    size_hint: None ,None
-                    size: dp(26), dp(26)                 
-                    md_bg_color: app.custom_colors['primary']
-                    icon_color: app.custom_colors['accent'] 
-
-                MDActionTopAppBarButton:
-                    icon: "information"
-                    on_release: app.info_dialog()  
-                    theme_icon_color: "Custom"
-                    theme_bg_color: "Custom"
-                    theme_font_size: "Custom"
-                    font_size: dp(26)
-                    size_hint: None ,None
-                    size: dp(26), dp(26)                 
-                    md_bg_color: app.custom_colors['primary']
-                    icon_color: app.custom_colors['accent'] 
+            MDIconButton:
+                icon: "information"
+                on_release: app.info_dialog()  
+                theme_icon_color: "Custom"
+                theme_bg_color: "Custom"
+                theme_font_size: "Custom"
+                font_size: dp(26)
+                size_hint: None ,None
+                size: dp(26), dp(26)                 
+                md_bg_color: app.custom_colors['primary']
+                icon_color: app.custom_colors['accent'] 
+                pos_hint: {"center_x": .5, "center_y": .5}
         MDBoxLayout:
             orientation: 'vertical'
             padding : dp(15)
             spacing : dp(20)
             halign:"center"
             id : box
+            Image:
+                id : gif
+                source:'Assets/finsh_animation.gif'
+                anim_delay:-1
+                anim_loop : 1
