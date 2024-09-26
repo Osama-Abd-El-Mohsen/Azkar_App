@@ -72,7 +72,7 @@ jobs:
         ANDROID_HOME: ${{ github.workspace }}/.buildozer/android/platform/android-sdk
 
     - name: Upload APK
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
           name: MyApp.apk
           path: bin/*.apk 
