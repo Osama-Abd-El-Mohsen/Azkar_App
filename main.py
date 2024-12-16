@@ -673,22 +673,25 @@ class MainApp(MDApp):
                 daemon=True
             )
             # self.service.start()
-            try:
-                MediaPlayer = autoclass('android.media.MediaPlayer')
-                AudioManager = autoclass('android.media.AudioManager')
-                mPlayer = MediaPlayer()
-                mPlayer.setDataSource('azkar2.wav')
-                mPlayer.setAudioStreamType(AudioManager.STREAM_NOTIFICATION)
-                mPlayer.prepare()
-                mPlayer.start()
-            except Exception as e:
-                print(f"Media Player Error: {e}")
 
         else:
             raise NotImplementedError(
                 "service start not implemented on this platform"
             )
 
+        try:
+            MediaPlayer = autoclass('android.media.MediaPlayer')
+            AudioManager = autoclass('android.media.AudioManager')
+            mPlayer = MediaPlayer()
+            mPlayer.setDataSource('azkar2.wav')
+            mPlayer.setAudioStreamType(AudioManager.STREAM_NOTIFICATION)
+            mPlayer.prepare()
+            mPlayer.start()
+            print("="*20)
+            print("voice done")
+            print("="*20)
+        except Exception as e:
+            print(f"Media Player Error: {e}")
 ####################### Events Function ##########################
 
 
