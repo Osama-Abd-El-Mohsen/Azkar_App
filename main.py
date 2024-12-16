@@ -235,7 +235,7 @@ class MainApp(MDApp):
 
     def add_zekr_card(self,zekr,desc,count,ref):
         self.screen_manager.get_screen('Azkar Screen_1').ids['list'].clear_widgets()
-        if desc == '22' :
+        if desc == '22' or desc == '110' :
             self.screen_manager.get_screen('Azkar Screen_1').ids['list'].add_widget(
                 MDCard(
                     MDBoxLayout(
@@ -261,7 +261,7 @@ class MainApp(MDApp):
                         MDBoxLayout(
                             MDBoxLayout(
                                 MDLabel(
-                                    text="الملك",
+                                    text="الملك" if desc =='22' else 'الكهف',
                                     adaptive_size=True,
                                     theme_text_color="Custom",
                                     theme_font_name="Custom",
@@ -338,7 +338,7 @@ class MainApp(MDApp):
                     height=self.calculate_card_height(zekr, desc)
                 ),
             )
-
+        
         elif len(desc) != 1:
             self.screen_manager.get_screen('Azkar Screen_1').ids['list'].add_widget(
                 MDCard(
