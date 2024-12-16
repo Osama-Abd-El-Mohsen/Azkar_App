@@ -102,7 +102,7 @@ def send_reminder(*args):
             notificator.notify(
                 app_name="Azkary",
                 title="افتكرى",
-                message="متنساش تقرأ اذكار المساء 😊",
+                message="متنسيش تقرئى اذكار المساء 😊",
                 app_icon=f"Assets/ico.ico",
                 ticker="ticker test",
                 toast=False
@@ -126,7 +126,7 @@ def send_reminder(*args):
             notificator.notify(
                 app_name="Azkary",
                 title="افتكرى",
-                message="متنساش تقرأ اذكار الصباح 😊",
+                message="متنسيش تقرئى اذكار الصباح 😊",
                 app_icon=f"Assets/ico.ico",
                 ticker="ticker test",
                 toast=False
@@ -139,7 +139,7 @@ def send_reminder(*args):
             notificator.notify(
                 app_name="Azkary",
                 title="افتكرى",
-                message="متنساش تقرأ سورة الملك 😊",
+                message="متنسيش تقرئى سورة الملك 😊",
                 app_icon=f"Assets/ico.ico",
                 ticker="ticker test",
                 toast=False
