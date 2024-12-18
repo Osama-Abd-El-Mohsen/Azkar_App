@@ -22,6 +22,8 @@ from oscpy.client import OSCClient
 from oscpy.server import OSCThreadServer
 import pandas as pd
 from kivy.uix.image import Image
+if platform == 'android':
+    from jnius import autoclass
 
 if platform != "android":
     Window.size = (406, 762)
@@ -670,7 +672,17 @@ class MainApp(MDApp):
                 kwargs={'run_name': '__main__'},
                 daemon=True
             )
-            self.service.start()
+            # self.service.start()
+            try:
+                MediaPlayer = autoclass('android.media.MediaPlayer')
+                AudioManager = autoclass('android.media.AudioManager')
+                mPlayer = MediaPlayer()
+                mPlayer.setDataSource('azkar.wav')
+                mPlayer.setAudioStreamType(AudioManager.STREAM_NOTIFICATION)
+                mPlayer.prepare()
+                mPlayer.start()
+            except Exception as e:
+                print(f"Media Player Error: {e}")
 
         else:
             raise NotImplementedError(
