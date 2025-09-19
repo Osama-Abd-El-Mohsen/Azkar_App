@@ -2,11 +2,9 @@ name: Build Kivy APK
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   build:
@@ -52,7 +50,9 @@ jobs:
           zip \
           unzip \
           openjdk-8-jdk \
-          autoconf automake libtool   # 👈 added fix
+          libtool \
+          automake \
+          autoconf
 
     - name: Install pip dependencies
       run: |
@@ -62,6 +62,12 @@ jobs:
     - name: Install Buildozer and python-for-android
       run: |
         pip install --upgrade buildozer python-for-android
+
+    - name: Cache buildozer
+      uses: actions/cache@v3
+      with:
+        path: .buildozer
+        key: ${{ runner.os }}-buildozer-${{ hashFiles('buildozer.spec') }}
 
     - name: Build the APK
       run: |
@@ -74,5 +80,5 @@ jobs:
     - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
-        name: MyApp.apk
+        name: AzkarApp-${{ github.sha }}.apk
         path: bin/*.apk
