@@ -2,9 +2,11 @@ name: Build Kivy APK
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
   build:
@@ -12,23 +14,24 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v2
 
     - name: Set up Java 17
       uses: actions/setup-java@v3
       with:
-        distribution: 'temurin'
+        distribution: 'temurin' 
         java-version: '17'
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v2
       with:
-        python-version: "3.11"
+        python-version: 3.11
 
-    - name: Install system dependencies
+    - name: Install dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y \
+        sudo apt-get install autoconf libtool --yes
           build-essential \
           libssl-dev \
           libffi-dev \
@@ -49,35 +52,17 @@ jobs:
           git \
           zip \
           unzip \
-          openjdk-8-jdk \
-          libtool \
-          automake \
-          autoconf \
-          pkg-config \
-          m4
+          openjdk-8-jdk 
+
 
     - name: Install pip dependencies
       run: |
         pip install --upgrade pip
         pip install setuptools wheel cython
 
-    - name: Install Buildozer and python-for-android
+    - name: Install Buildozer and requirements
       run: |
-        pip install --upgrade buildozer python-for-android
-
-    - name: Cache Buildozer
-      uses: actions/cache@v3
-      with:
-        path: .buildozer
-        key: ${{ runner.os }}-buildozer-${{ hashFiles('buildozer.spec') }}
-
-    - name: Cache Gradle and Android
-      uses: actions/cache@v3
-      with:
-        path: |
-          ~/.gradle
-          ~/.android
-        key: ${{ runner.os }}-android-${{ hashFiles('buildozer.spec') }}
+        pip install buildozer
 
     - name: Build the APK
       run: |
@@ -87,14 +72,8 @@ jobs:
         ANDROID_NDK_ROOT: ${{ github.workspace }}/.buildozer/android/platform/android-ndk-r21e
         ANDROID_HOME: ${{ github.workspace }}/.buildozer/android/platform/android-sdk
 
-    - name: Upload APK (commit hash)
+    - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
-        name: AzkarApp-${{ github.sha }}.apk
-        path: bin/*.apk
-
-    - name: Upload APK (latest)
-      uses: actions/upload-artifact@v4
-      with:
-        name: AzkarApp-latest.apk
-        path: bin/*.apk
+          name: MyApp.apk
+          path: bin/*.apk 
