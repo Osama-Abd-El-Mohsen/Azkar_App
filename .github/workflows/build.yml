@@ -52,7 +52,9 @@ jobs:
           openjdk-8-jdk \
           libtool \
           automake \
-          autoconf
+          autoconf \
+          pkg-config \
+          m4
 
     - name: Install pip dependencies
       run: |
@@ -63,11 +65,19 @@ jobs:
       run: |
         pip install --upgrade buildozer python-for-android
 
-    - name: Cache buildozer
+    - name: Cache Buildozer
       uses: actions/cache@v3
       with:
         path: .buildozer
         key: ${{ runner.os }}-buildozer-${{ hashFiles('buildozer.spec') }}
+
+    - name: Cache Gradle and Android
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.gradle
+          ~/.android
+        key: ${{ runner.os }}-android-${{ hashFiles('buildozer.spec') }}
 
     - name: Build the APK
       run: |
@@ -77,8 +87,14 @@ jobs:
         ANDROID_NDK_ROOT: ${{ github.workspace }}/.buildozer/android/platform/android-ndk-r21e
         ANDROID_HOME: ${{ github.workspace }}/.buildozer/android/platform/android-sdk
 
-    - name: Upload APK
+    - name: Upload APK (commit hash)
       uses: actions/upload-artifact@v4
       with:
         name: AzkarApp-${{ github.sha }}.apk
+        path: bin/*.apk
+
+    - name: Upload APK (latest)
+      uses: actions/upload-artifact@v4
+      with:
+        name: AzkarApp-latest.apk
         path: bin/*.apk
