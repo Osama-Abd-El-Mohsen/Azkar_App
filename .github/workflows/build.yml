@@ -14,20 +14,20 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up Java 17
       uses: actions/setup-java@v3
       with:
-        distribution: 'temurin' 
+        distribution: 'temurin'
         java-version: '17'
 
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
-        python-version: 3.11
+        python-version: "3.11"
 
-    - name: Install dependencies
+    - name: Install system dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y \
@@ -51,17 +51,17 @@ jobs:
           git \
           zip \
           unzip \
-          openjdk-8-jdk 
-
+          openjdk-8-jdk \
+          autoconf automake libtool   # 👈 added fix
 
     - name: Install pip dependencies
       run: |
         pip install --upgrade pip
         pip install setuptools wheel cython
 
-    - name: Install Buildozer and requirements
+    - name: Install Buildozer and python-for-android
       run: |
-        pip install buildozer
+        pip install --upgrade buildozer python-for-android
 
     - name: Build the APK
       run: |
@@ -74,5 +74,5 @@ jobs:
     - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
-          name: MyApp.apk
-          path: bin/*.apk 
+        name: MyApp.apk
+        path: bin/*.apk
